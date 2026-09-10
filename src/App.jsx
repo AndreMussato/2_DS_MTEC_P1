@@ -36,9 +36,79 @@ function App() {
   /* gameStage = etapa atual do jogo
   setGameStage = altera a etapa atual
   O jogo começa na etapa "start". */
-  const [ gameStage, setGameStage ] = useState(stages[0].name);
+  const [gameStage, setGameStage] = useState(stages[0].name);
 
-  
+  /* words = palavras disponíveis no jogo
+  Recebe inicialmente o conteúdo de wordsList. */
+  const [words] = useState(wordsList);
+
+  /* pickedWord = palavra sorteada
+  setPickedWord = altera a palavra sorteada */
+  const [pickedWord, setPickedWord] = useState("");
+
+  /* pickedCategory = categoria sorteada
+  setPickedCategory = altera a categoria */
+  const [pickedCategory, setPickedCategory] = useState("");
+
+  /* letters = array contendo cada letra da palavra sorteada
+  setLetters = altera esse array */
+  const [letters, setLetters] = useState([]);
+
+  /* guessedLetters = letras corretas já advinhadas
+  wrongLetters = letras erradas já digitadas */
+  const [guessedLetters, setGuessedLetters] = useState([]);
+  const [wrongLetters, setWrongLetters] = useState([]);
+
+  /* guesses = quantidade de tentativas restantes
+  Começa com o valor definido em guessesQty */
+  const [guesses, setGuesses] = useState(guessesQty);
+
+  /* score = pontuação atual do jogador */
+  const [score, setScore] = useState(0);
+
+  /* pickWordAndCategory = escolher palavra e categoria
+  useCallback memoriza a função e só cria uma nova
+  versão caso o valor de "words" seja alterado. */
+  const pickWordAndCategory = useCallback(() => {
+
+    /* Object.keys() retorna um array contendo
+    todas as chaves do objeto words.
+    Exemplo:
+     {
+      carro: [...],
+      fruta: [...]
+    }
+      será transformado em:
+      ["carro", "fruta"] */
+    const categories = Object.keys(words);
+
+    /* Math.random() gera um número aleatório entre 0 e 1.
+    Math.floor() remove as casas decimais.
+    Dessa forma, uma posição aleatória do array
+    de categorias é escolhida. */
+    const category =
+      categories[
+      Math.floor(
+        Math.random() * Object.keys(categories).length
+      )
+      ];
+
+    console.log(category);
+
+    /* Escolhe uma palavra aleatória dentro
+    da categoria selecionada. */
+    const word =
+      words[category][
+      Math.floor(
+        Math.random() * words[category].length
+      )
+      ]
+
+      console.log(word);
+
+      //Retorna a palavra e a categoria escolhidas
+      return { word, category }
+  }, [words]);
   return (
     <>
     </>
