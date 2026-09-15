@@ -109,6 +109,50 @@ function App() {
       //Retorna a palavra e a categoria escolhidas
       return { word, category }
   }, [words]);
+
+  /* startGame = iniciar jogo
+  useCallback evita que a função seja recriada
+  desnecessariamente a cada renderização. */
+  const startGame = useCallback(() => {
+
+    //Limpa as letras utilizadas na rodada anterior
+    clearLetterStates();
+
+    //Recebe a palavra e a categoria sorteadas
+    const { word, category } = pickWordAndCategory();
+
+    /* split("") transforma uma palavra em um array.
+    Exemplo:
+    "React"
+    vira:
+    ["R", "e", "a", "c", "t"] */
+    let wordLetters = word.split("");
+
+    /* map() percorre cada letra do array.
+    toLowerCase() transforma todas as letras
+    em minúsculas para facilitar as comparações. */
+    wordLetters = wordLetters.map(
+      (l) => l.toLowerCase()
+    );
+
+    console.log(word, category);
+    console.log(wordLetters);
+
+    //Preenche os estados com os dados sorteados
+    setPickedWord(word);
+    setPickedCategory(category);
+    setLetters(wordLetters);
+
+    //Altera a etapa do jogo para "game"
+    setGameStage(stages[1].name);
+  }, [pickWordAndCategory]);
+
+  /* verifyLetter = verificar letra
+  Recebe a letra digitada pelo usuário. */
+  const verifyLetter = (letter) => {
+    CONTINUAR DAQUI ;)
+  }
+
   return (
     <>
     </>
