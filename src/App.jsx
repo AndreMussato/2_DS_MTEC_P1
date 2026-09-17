@@ -150,6 +150,101 @@ function App() {
   /* verifyLetter = verificar letra
   Recebe a letra digitada pelo usuário. */
   const verifyLetter = (letter) => {
+    
+    /* normalizedLetter = letra normalizada converte a letra
+    digitada para maiúscula para evitar diferenças entre, por
+    exemplo: "A" e "a" */
+    const normalizedLetter = letter.toLowerCase();
+
+    /* includes() verifica se determinado valor já existe
+    dentro de um array.
+    Se a letra já foi utilizada, a função é interrompida
+    pelo return. */
+    if (
+      guessedLetters.includes(normalizedLetter) ||
+      wrongLetters.includes(normalizedLetter)
+    ) {
+      return;
+    }
+
+    /* Verifica se a letra digitada existe dentro da palavra sorteada */
+    if(letters.includes(normalizedLetter)) {
+      /* Atualiza o array de letras acertadas.
+      ...actualGuessedLetters utiliza o Spread Operator para copiar
+      os valores que já estavam dentro do array.
+      Depois adiciona a nova letra. */
+      setGuessedLetters((actualGuessedLetters) => [
+        ...actualGuessedLetters,
+        normalizedLetter
+      ]);
+    } else {
+      /* Caso a letra não exista na palavra, ela é adicionada ao array de letras 
+      erradas. */
+      setWrongLetters((actualWrongLetters) => [
+        ...actualWrongLetters,
+        normalizedLetter
+      ]);
+
+      /* Diminui uma tentativa.
+      actualGuesses representa o valor atual do estado guesses. */
+      setGuesses(
+        (actualGuesses) => actualGuesses - 1
+      );
+    }
+  };
+
+  /* clearLetterStates = limpar estados das letras
+  Limpa tanto as letras corretas quanto as letras
+  erradas da rodada. */
+  const clearLetterStates = () => {
+    setGuessedLetters([]);
+    setWrongLetters([]);
+  };
+
+  /* useEffect observa o valor de guesses. Sempre que guesses mudar,
+  esse código será executado. */
+  useEffect(() => {
+    
+    // Verifica se as tentativas acabaram
+    if(guesses <= 0) {
+      //Limpa as letras utilizadas
+      clearLetterStates();
+
+      //Altera a etapa do jogo para "end"
+      setGameStage(stages[2].name)
+    }
+  }, [guesses]);
+
+  /* useEffect responsável por verificar se o jogador acertou a palavra.
+  Ele será executado quando algum valor listado no array de dependências mudar */
+  useEffect(() => {
+    /* Set elemina valores repetidos.
+    Exemplo:
+    ["a", "r", "a", "r", "a"]
+    vira:
+    ["a", "r"]
+    O operador ... transforma novamente o Set em um array. */
+    const uniqueLetters = [...new Set(letters)];
+
+    /* Condição de vitória:
+    Se a quantidade de letras acertadas for igual à quantidade de letras únicas
+    da palavra, significa que o jogador acertou todas as letras necessárias. */
+    if (
+      guessedLetters.length === uniqueLetters.length
+    ) {
+      /* Adiciona 100 pontos.
+      actualScore = pontuação atual. */
+      setScore(
+        (actualScore) => actualScore += 100
+      );
+
+      //Inicia uma nova rodada com outra palavra
+      setGame();
+    }
+  }, [guessedLetters, letters, startGame]);
+
+  /* retry = tentar novamente / reiniciar jogo */
+  const retry = () => {
     CONTINUAR DAQUI ;)
   }
 
